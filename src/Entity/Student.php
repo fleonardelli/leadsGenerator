@@ -39,7 +39,7 @@ class Student
     private $phone;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Lead", mappedBy="estudiante")
+     * @ORM\OneToMany(targetEntity="App\Entity\Lead", mappedBy="student")
      */
     private $leads;
 

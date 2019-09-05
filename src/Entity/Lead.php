@@ -17,7 +17,7 @@ class Lead
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\student", inversedBy="leads")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Student", inversedBy="leads")
      * @ORM\JoinColumn(nullable=false)
      */
     private $student;

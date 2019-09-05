@@ -3,39 +3,86 @@
 namespace App\Controller;
 
 use App\Entity\AcademicOffer;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Form\AcademicOfferType;
+use App\Repository\AcademicOfferRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+/**
+ * @Route("/offer")
+ */
 class AcademicOfferController extends AbstractController
 {
     /**
-     * @Route("/academicoffer", name="academic_offers")
+     * @Route("/", name="academic_offer_index", methods={"GET"})
      */
-    public function index(EntityManagerInterface $em)
+    public function index(AcademicOfferRepository $academicOfferRepository): Response
     {
-        $academicOffers = $em->getRepository(AcademicOffer::class)
-            ->findAll();
-
-        return $this->json(
-            [
-                'academicOffers' => $academicOffers
-            ]
-        );
+        return $this->json([
+            'academic_offers' => $academicOfferRepository->findBy(['active' => 1]),
+        ]);
     }
 
     /**
-     * @Route("/academicoffer/{id}", name="academic_offer")
+     * @Route("/new", name="academic_offer_new", methods={"GET","POST"})
      */
-    public function show(AcademicOffer $academicOffer)
+    public function new(Request $request): Response
     {
-        return $this->json(
-            [
-                'academicOffer' => $academicOffer
-            ]
-        );
+        $academicOffer = new AcademicOffer();
+        $form = $this->createForm(AcademicOfferType::class, $academicOffer);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($academicOffer);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('academic_offer_index');
+        }
+
+        return $this->json(['code' => 400]);
     }
 
+    /**
+     * @Route("/{id}", name="academic_offer_show", methods={"GET"})
+     */
+    public function show(AcademicOffer $academicOffer): Response
+    {
+        return $this->json([
+            'academic_offer' => $academicOffer,
+        ]);
+    }
 
+    /**
+     * @Route("/{id}/edit", name="academic_offer_edit", methods={"GET","POST"})
+     */
+    public function edit(Request $request, AcademicOffer $academicOffer): Response
+    {
+        $form = $this->createForm(AcademicOfferType::class, $academicOffer);
+        $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('academic_offer_index');
+        }
+
+        return $this->json(['code' => 400]);
+    }
+
+    /**
+     * @Route("/{id}", name="academic_offer_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, AcademicOffer $academicOffer): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$academicOffer->getId(), $request->request->get('_token'))) {
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->remove($academicOffer);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('academic_offer_index');
+    }
 }
