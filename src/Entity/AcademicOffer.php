@@ -79,7 +79,7 @@ class AcademicOffer
 
     public function __construct()
     {
-        $this->offerType = new ArrayCollection();
+        $this->offerType = new ArrayCollection(); // ¿Por qué es una colección? ¿Cómo pensaste el offerType?
         $this->courseMode = new ArrayCollection();
         $this->leads = new ArrayCollection();
     }
