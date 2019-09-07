@@ -36,7 +36,7 @@ class Institution
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $addressÂ;
+    private $address;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\InstitutionType", inversedBy="institutions")
@@ -111,14 +111,14 @@ class Institution
         return $this;
     }
 
-    public function getAddressÂ(): ?string
+    public function getAddress(): ?string
     {
-        return $this->addressÂ;
+        return $this->address;
     }
 
-    public function setAddressÂ(?string $addressÂ): self
+    public function setAddress(?string $address): self
     {
-        $this->addressÂ = $addressÂ;
+        $this->address = $address;
 
         return $this;
     }

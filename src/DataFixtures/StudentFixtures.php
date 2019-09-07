@@ -3,17 +3,18 @@
 namespace App\DataFixtures;
 
 use App\Entity\Student;
-use Doctrine\Common\Persistence\ObjectManager;
 
 class StudentFixtures extends BaseFixture
 {
-
-    public function loadData(ObjectManager $manager)
+    /**
+     *
+     */
+    public function loadData()
     {
         $this->createMany(
             Student::class,
             10,
-            function(Student $student, $count) {
+            function(Student $student) {
                 $student->setName($this->faker->name)
                         ->setEmail($this->faker->email)
                         ->setPhone($this->faker->phoneNumber)

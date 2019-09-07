@@ -2,16 +2,37 @@
 
 namespace App\DataFixtures;
 
-use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use App\Entity\AcademicOffer;
+use App\Entity\Institution;
+use App\Entity\InstitutionType;
 
-class InstitutionFixtures extends Fixture
+class InstitutionFixtures extends BaseFixture
 {
-    public function load(ObjectManager $manager)
+    /**
+     *
+     */
+    public function loadData()
     {
-        // $product = new Product();
-        // $manager->persist($product);
+        $this->createMany(
+            Institution::class,
+            10,
+            function(Institution $institution) {
+                $institutionTypes = $this->manager
+                    ->getRepository(InstitutionType::class)
+                    ->findAll();
 
-        $manager->flush();
+                $academicOffers = $this->manager
+                    ->getRepository(AcademicOffer::class)
+                    ->findAll();
+
+                $institution->setName($this->faker->domainName)
+                    ->setPhone($this->faker->phoneNumber)
+                    ->setEmail($this->faker->email)
+                    ->setAddress($this->faker->address)
+                    ->setInstitutionType($institutionTypes[array_rand($institutionTypes)])
+                    ->setLeadPrice($this->faker->randomFloat())
+                    ->setActive(1);
+            }
+        );
     }
 }
