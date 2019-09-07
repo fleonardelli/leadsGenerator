@@ -1,9 +1,9 @@
 # leadsGenerator
 
 
-#Wiki
+# Wiki
 
-##Up and running
+## Up and running
 
 - Create database: bin/console doctrine:database:create
 - Migrate table and minimal data: bin/console doctrine:migrations:migrate
