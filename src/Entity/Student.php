@@ -19,22 +19,22 @@ class Student
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=255)
      */
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=120, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $surname;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=255)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=120, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $phone;
 
@@ -70,7 +70,7 @@ class Student
         return $this->surname;
     }
 
-    public function setSurname(?string $surname): self
+    public function setSurname(string $surname): self
     {
         $this->surname = $surname;
 

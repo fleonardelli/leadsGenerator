@@ -29,6 +29,11 @@ class AcademicOffer
      */
     private $tematicArea;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\OfferType", inversedBy="academicOffers")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $offerType;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\CourseMode", inversedBy="academicOffers")
@@ -36,7 +41,7 @@ class AcademicOffer
     private $courseMode;
 
     /**
-     * @ORM\Column(type="float")
+     * @ORM\Column(type="float", nullable=true)
      */
     private $duration;
 
@@ -46,12 +51,12 @@ class AcademicOffer
     private $timeTable;
 
     /**
-     * @ORM\Column(type="string", length=120, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $coursePlace;
 
     /**
-     * @ORM\Column(type="string", length=1024, nullable=true)
+     * @ORM\Column(type="string", length=1000, nullable=true)
      */
     private $description;
 
@@ -59,12 +64,6 @@ class AcademicOffer
      * @ORM\Column(type="boolean")
      */
     private $active;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\OfferType", inversedBy="academicOffers")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $offerType;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Institution", inversedBy="academicOffers")
@@ -79,7 +78,6 @@ class AcademicOffer
 
     public function __construct()
     {
-        $this->offerType = new ArrayCollection();
         $this->courseMode = new ArrayCollection();
         $this->leads = new ArrayCollection();
     }
@@ -109,6 +107,18 @@ class AcademicOffer
     public function setTematicArea(?TematicArea $tematicArea): self
     {
         $this->tematicArea = $tematicArea;
+
+        return $this;
+    }
+
+    public function getOfferType(): ?OfferType
+    {
+        return $this->offerType;
+    }
+
+    public function setOfferType(?OfferType $offerType): self
+    {
+        $this->offerType = $offerType;
 
         return $this;
     }
@@ -144,7 +154,7 @@ class AcademicOffer
         return $this->duration;
     }
 
-    public function setDuration(float $duration): self
+    public function setDuration(?float $duration): self
     {
         $this->duration = $duration;
 
@@ -168,7 +178,7 @@ class AcademicOffer
         return $this->coursePlace;
     }
 
-    public function setCoursePlace(?string $coursePlace): self
+    public function setCoursePlace(string $coursePlace): self
     {
         $this->coursePlace = $coursePlace;
 
@@ -195,18 +205,6 @@ class AcademicOffer
     public function setActive(bool $active): self
     {
         $this->active = $active;
-
-        return $this;
-    }
-
-    public function getOfferType(): ?OfferType
-    {
-        return $this->offerType;
-    }
-
-    public function setOfferType(?OfferType $offerType): self
-    {
-        $this->offerType = $offerType;
 
         return $this;
     }

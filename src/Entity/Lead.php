@@ -25,7 +25,7 @@ class Lead
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $portal;
+    private $fromPortal;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\AcademicOffer", inversedBy="leads")
@@ -53,26 +53,26 @@ class Lead
         return $this->id;
     }
 
-    public function getStudent(): ?student
+    public function getStudent(): ?Student
     {
         return $this->student;
     }
 
-    public function setStudent(?student $student): self
+    public function setStudent(?Student $student): self
     {
         $this->student = $student;
 
         return $this;
     }
 
-    public function getPortal(): ?string
+    public function getFromPortal(): ?string
     {
-        return $this->portal;
+        return $this->fromPortal;
     }
 
-    public function setPortal(string $portal): self
+    public function setFromPortal(string $fromPortal): self
     {
-        $this->portal = $portal;
+        $this->fromPortal = $fromPortal;
 
         return $this;
     }

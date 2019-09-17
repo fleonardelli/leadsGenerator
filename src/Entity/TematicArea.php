@@ -19,14 +19,9 @@ class TematicArea
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=120)
+     * @ORM\Column(type="string", length=255)
      */
     private $name;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $active;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\AcademicOffer", mappedBy="tematicArea")
@@ -51,18 +46,6 @@ class TematicArea
     public function setName(string $name): self
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getActive(): ?bool
-    {
-        return $this->active;
-    }
-
-    public function setActive(bool $active): self
-    {
-        $this->active = $active;
 
         return $this;
     }

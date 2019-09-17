@@ -17,12 +17,6 @@ class Bill
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Institution", inversedBy="bills")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $institution;
-
-    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -30,12 +24,12 @@ class Bill
     /**
      * @ORM\Column(type="integer")
      */
-    private $leadsQuantity;
+    private $leadsCount;
 
     /**
      * @ORM\Column(type="float")
      */
-    private $pricePerLead;
+    private $leadPrice;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
@@ -45,18 +39,6 @@ class Bill
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getInstitution(): ?Institution
-    {
-        return $this->institution;
-    }
-
-    public function setInstitution(?Institution $institution): self
-    {
-        $this->institution = $institution;
-
-        return $this;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface
@@ -71,26 +53,26 @@ class Bill
         return $this;
     }
 
-    public function getLeadsQuantity(): ?int
+    public function getLeadsCount(): ?int
     {
-        return $this->leadsQuantity;
+        return $this->leadsCount;
     }
 
-    public function setLeadsQuantity(int $leadsQuantity): self
+    public function setLeadsCount(int $leadsCount): self
     {
-        $this->leadsQuantity = $leadsQuantity;
+        $this->leadsCount = $leadsCount;
 
         return $this;
     }
 
-    public function getPricePerLead(): ?float
+    public function getLeadPrice(): ?float
     {
-        return $this->pricePerLead;
+        return $this->leadPrice;
     }
 
-    public function setPricePerLead(float $pricePerLead): self
+    public function setLeadPrice(float $leadPrice): self
     {
-        $this->pricePerLead = $pricePerLead;
+        $this->leadPrice = $leadPrice;
 
         return $this;
     }
@@ -100,7 +82,7 @@ class Bill
         return $this->paymentDate;
     }
 
-    public function setPaymentDate(?\DateTimeInterface $paymentDate): self
+    public function setPaymentDate(\DateTimeInterface $paymentDate): self
     {
         $this->paymentDate = $paymentDate;
 

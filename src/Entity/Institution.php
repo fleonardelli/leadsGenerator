@@ -24,17 +24,17 @@ class Institution
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=120)
+     * @ORM\Column(type="string", length=255)
      */
     private $phone;
 
     /**
-     * @ORM\Column(type="string", length=150)
+     * @ORM\Column(type="string", length=255)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255)
      */
     private $address;
 
@@ -59,15 +59,9 @@ class Institution
      */
     private $academicOffers;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Bill", mappedBy="institution")
-     */
-    private $bills;
-
     public function __construct()
     {
         $this->academicOffers = new ArrayCollection();
-        $this->bills = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -116,7 +110,7 @@ class Institution
         return $this->address;
     }
 
-    public function setAddress(?string $address): self
+    public function setAddress(string $address): self
     {
         $this->address = $address;
 
@@ -184,37 +178,6 @@ class Institution
             // set the owning side to null (unless already changed)
             if ($academicOffer->getInstitution() === $this) {
                 $academicOffer->setInstitution(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection|Bill[]
-     */
-    public function getBills(): Collection
-    {
-        return $this->bills;
-    }
-
-    public function addBill(Bill $bill): self
-    {
-        if (!$this->bills->contains($bill)) {
-            $this->bills[] = $bill;
-            $bill->setInstitution($this);
-        }
-
-        return $this;
-    }
-
-    public function removeBill(Bill $bill): self
-    {
-        if ($this->bills->contains($bill)) {
-            $this->bills->removeElement($bill);
-            // set the owning side to null (unless already changed)
-            if ($bill->getInstitution() === $this) {
-                $bill->setInstitution(null);
             }
         }
 

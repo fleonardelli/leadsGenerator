@@ -29,7 +29,7 @@ class LeadFixtures extends BaseFixture implements DependentFixtureInterface
                 $lead->setAcademicOffer($academicOffers[array_rand($academicOffers)])
                     ->setCreatedAt($this->faker->dateTime)
                     ->setGotFromCrm($this->faker->boolean)
-                    ->setPortal($this->faker->url)
+                    ->setFromPortal($this->faker->url)
                     ->setSentByEmail($this->faker->boolean)
                     ->setStudent($students[array_rand($students)]);
             }
