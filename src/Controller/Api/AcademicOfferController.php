@@ -4,21 +4,35 @@
 namespace App\Controller\Api;
 use App\Entity\AcademicOffer;
 use FOS\RestBundle\Controller\Annotations as Rest;
-use FOS\RestBundle\View\View;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
+/**
+ * Class AcademicOfferController
+ * @package App\Controller\Api
+ */
 class AcademicOfferController extends AbstractFOSRestController
 {
     /**
+     * @Rest\Get("/academicOffers")
+     *
+     * @return Response
+     */
+    public function getAcamicOffersAction(): Response
+    {
+        $repository=$this->getDoctrine()->getRepository(AcademicOffer::class);
+        $movies=$repository->findall();
+        return $this->handleView($this->view($movies));
+    }
+
+    /**
      * @Rest\Get("/academicOffer/{academicOffer}")
      *
-     * @ParamConverter("academicOffer", class=AcademicOffer::class)
+     * @return Response
      */
-    public function getArticle(AcademicOffer $academicOffer): View
+    public function getAcamicOfferAction(AcademicOffer $academicOffer): Response
     {
-        return View::create($academicOffer, Response::HTTP_OK);
+        return $this->handleView($this->view($academicOffer));
     }
 
 }
