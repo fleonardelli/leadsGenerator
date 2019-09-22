@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\LeadRepository")
@@ -19,6 +20,7 @@ class Lead
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Student", inversedBy="leads")
      * @ORM\JoinColumn(nullable=false)
+     * @MaxDepth(1)
      */
     private $student;
 
@@ -30,6 +32,7 @@ class Lead
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\AcademicOffer", inversedBy="leads")
      * @ORM\JoinColumn(nullable=false)
+     * @MaxDepth(1)
      */
     private $academicOffer;
 

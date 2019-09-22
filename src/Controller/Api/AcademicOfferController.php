@@ -5,13 +5,13 @@ namespace App\Controller\Api;
 use App\Entity\AcademicOffer;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Response;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
+
 
 /**
  * Class AcademicOfferController
  * @package App\Controller\Api
  */
-class AcademicOfferController extends AbstractFOSRestController
+class AcademicOfferController extends AbstractCustomController
 {
     /**
      * @Rest\Get("/academicOffers")
@@ -20,9 +20,13 @@ class AcademicOfferController extends AbstractFOSRestController
      */
     public function getAcamicOffersAction(): Response
     {
-        $repository=$this->getDoctrine()->getRepository(AcademicOffer::class);
-        $movies=$repository->findall();
-        return $this->handleView($this->view($movies));
+        $repository = $this->getDoctrine()
+            ->getRepository(AcademicOffer::class);
+
+        return $this->serializedJsonResponse(
+            $repository->findAll(),
+            200
+        );
     }
 
     /**
@@ -32,7 +36,7 @@ class AcademicOfferController extends AbstractFOSRestController
      */
     public function getAcamicOfferAction(AcademicOffer $academicOffer): Response
     {
-        return $this->handleView($this->view($academicOffer));
+        return new Response();
     }
 
 }

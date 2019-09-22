@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation\MaxDepth;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AcademicOfferRepository")
@@ -26,17 +27,20 @@ class AcademicOffer
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\TematicArea", inversedBy="academicOffers")
      * @ORM\JoinColumn(nullable=false)
+     * @MaxDepth(1)
      */
     private $tematicArea;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\OfferType", inversedBy="academicOffers")
      * @ORM\JoinColumn(nullable=false)
+     * @MaxDepth(1)
      */
     private $offerType;
 
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\CourseMode", inversedBy="academicOffers")
+     * @MaxDepth(1)
      */
     private $courseMode;
 
@@ -68,6 +72,7 @@ class AcademicOffer
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Institution", inversedBy="academicOffers")
      * @ORM\JoinColumn(nullable=false)
+     * @MaxDepth(1)
      */
     private $institution;
 
