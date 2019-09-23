@@ -3,6 +3,7 @@
 
 namespace App\Controller\Api;
 use App\Entity\AcademicOffer;
+use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -18,10 +19,9 @@ class AcademicOfferController extends AbstractCustomController
      *
      * @return Response
      */
-    public function getAcademicOffersAction(): Response
+    public function getAcademicOffersAction(EntityManagerInterface $entityManager): Response
     {
-        $repository = $this->getDoctrine()
-            ->getRepository(AcademicOffer::class);
+        $repository = $entityManager->getRepository(AcademicOffer::class);
 
         return $this->serializedJsonResponse(
             $repository->findAll()

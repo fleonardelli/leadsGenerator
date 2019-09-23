@@ -72,7 +72,7 @@ class AcademicOffer
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Institution", inversedBy="academicOffers")
      * @ORM\JoinColumn(nullable=false)
-     * @MaxDepth(1)
+     * @MaxDepth(2)
      */
     private $institution;
 
