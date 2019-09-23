@@ -18,14 +18,13 @@ class AcademicOfferController extends AbstractCustomController
      *
      * @return Response
      */
-    public function getAcamicOffersAction(): Response
+    public function getAcademicOffersAction(): Response
     {
         $repository = $this->getDoctrine()
             ->getRepository(AcademicOffer::class);
 
         return $this->serializedJsonResponse(
-            $repository->findAll(),
-            200
+            $repository->findAll()
         );
     }
 
@@ -34,9 +33,11 @@ class AcademicOfferController extends AbstractCustomController
      *
      * @return Response
      */
-    public function getAcamicOfferAction(AcademicOffer $academicOffer): Response
+    public function getAcademicOfferAction(AcademicOffer $academicOffer): Response
     {
-        return new Response();
+        return $this->serializedJsonResponse(
+             $academicOffer
+        );
     }
 
 }

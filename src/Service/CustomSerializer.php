@@ -7,8 +7,12 @@ use JMS\Serializer\SerializerBuilder;
 
 class CustomSerializer
 {
-
-    public function serialize(array $data): string
+    /**
+     * @param $data
+     *
+     * @return string
+     */
+    public function serialize($data): string
     {
         $serializer = SerializerBuilder::create()->build();
         return $serializer->serialize(

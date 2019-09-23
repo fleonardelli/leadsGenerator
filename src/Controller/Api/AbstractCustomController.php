@@ -18,7 +18,7 @@ class AbstractCustomController extends AbstractFOSRestController
     }
 
     protected function serializedJsonResponse(
-        array $content = [],
+        $content = [],
         int $status = 200,
         array $headers = [])
     {
