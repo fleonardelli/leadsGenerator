@@ -14,6 +14,7 @@ class CustomSerializer
      */
     public function serialize($data): string
     {
+        //TODO: En constructor o extender de JMSerializer o recibirlo por DI
         $serializer = SerializerBuilder::create()->build();
         return $serializer->serialize(
             $data,

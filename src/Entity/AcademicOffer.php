@@ -72,7 +72,7 @@ class AcademicOffer
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Institution", inversedBy="academicOffers")
      * @ORM\JoinColumn(nullable=false)
-     * @MaxDepth(2)
+     * @MaxDepth(1)
      */
     private $institution;
 
@@ -232,6 +232,20 @@ class AcademicOffer
     public function getLeads(): Collection
     {
         return $this->leads;
+    }
+
+    /**
+     * @return Collection|Lead[]
+     */
+    public function getUnsentLeads(): Collection
+    {
+        return $this->leads->filter(
+            function ($lead) {
+                /** @var $lead Lead */
+                return !$lead->getGotFromCrm()
+                    && !$lead->getSentByEmail();
+            }
+        );
     }
 
     public function addLead(Lead $lead): self

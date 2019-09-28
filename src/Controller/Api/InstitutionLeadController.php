@@ -1,8 +1,8 @@
 <?php
 
-
 namespace App\Controller\Api;
 
+use App\Entity\AcademicOffer;
 use App\Entity\Institution;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -28,8 +28,18 @@ class InstitutionLeadController extends AbstractCustomController
     {
         $repository = $entityManager->getRepository(Institution::class);
 
+        $academicOffers = $repository->find($institutionId)->getAcademicOffers();
+
+        $academicOfferLeads = [];
+        foreach ($academicOffers as $academicOffer) {
+            /** @var AcademicOffer $academicOffer */
+            if ($academicOffer->getUnsentLeads()->count()) {
+                $academicOfferLeads[$academicOffer->getName()] = $academicOffer->getUnsentLeads();
+            }
+        }
+
         return $this->serializedJsonResponse(
-            $repository->find($institutionId)->getAcademicOffers()
+            $academicOfferLeads
         );
     }
 
