@@ -31,5 +31,5 @@ API REST for handling leads of Educational Institutions. Focused on having a com
 
 ## API
 
-Get all academic offers: `GET /api/academicOffers`
-Get Specific academic offed: `GET /api/academicOffer/{academicOfferId}`
+- Get all academic offers: `GET /api/academicOffers`
+- Get Specific academic offed: `GET /api/academicOffer/{academicOfferId}`
