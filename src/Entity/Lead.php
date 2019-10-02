@@ -51,6 +51,11 @@ class Lead
      */
     private $sentByEmail;
 
+    /**
+     * @ORM\Column(type="string", length=1000, nullable=true)
+     */
+    private $message;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -124,6 +129,18 @@ class Lead
     public function setSentByEmail(bool $sentByEmail): self
     {
         $this->sentByEmail = $sentByEmail;
+
+        return $this;
+    }
+
+    public function getMessage(): ?string
+    {
+        return $this->message;
+    }
+
+    public function setMessage(?string $message): self
+    {
+        $this->message = $message;
 
         return $this;
     }

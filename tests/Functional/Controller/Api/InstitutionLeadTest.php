@@ -56,4 +56,16 @@ class InstitutionLeadTest extends WebTestCase
             $this->assertArrayHasKey($key, current($arrayResponse)[0]);
         }
     }
+
+    /**
+    * @test
+    */
+    public function shouldReturn404WhenInstitutionNotExist(): void
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/api/institution/111/leads');
+
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+    }
 }

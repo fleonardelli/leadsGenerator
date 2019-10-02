@@ -28,7 +28,18 @@ class InstitutionLeadController extends AbstractCustomController
     {
         $repository = $entityManager->getRepository(Institution::class);
 
-        $academicOffers = $repository->find($institutionId)->getAcademicOffers();
+        /** @var Institution $institution */
+        $institution = $repository->find($institutionId);
+
+        if (null === $institution) {
+
+            return $this->serializedJsonResponse(
+                'Institution not found.',
+                404
+            );
+        }
+
+        $academicOffers = $institution->getAcademicOffers();
 
         $academicOfferLeads = [];
         foreach ($academicOffers as $academicOffer) {

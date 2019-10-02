@@ -7,7 +7,7 @@ use App\Service\CustomSerializer;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Response;
 
-class AbstractCustomController extends AbstractFOSRestController
+abstract class AbstractCustomController extends AbstractFOSRestController
 {
     /** @var CustomSerializer */
     private $serializer;

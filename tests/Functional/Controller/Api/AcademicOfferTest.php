@@ -62,7 +62,7 @@ class AcademicOfferTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldReturnJsonWithKeysWhenGetAcademicOffers(): void
+    public function shouldReturnJsonWithKeysWhenExistAcademicOffers(): void
     {
         $client = static::createClient();
 
@@ -90,7 +90,7 @@ class AcademicOfferTest extends WebTestCase
     /**
      * @test
      */
-    public function shouldReturnJsonWithKeysWhenGetSpecificAcademicOffers(): void
+    public function shouldReturnJsonWithKeysWhenExistSpecificAcademicOffers(): void
     {
         $client = static::createClient();
 
@@ -112,5 +112,17 @@ class AcademicOfferTest extends WebTestCase
         foreach ($keys as $key) {
             $this->assertArrayHasKey($key, $arrayResponse);
         }
+    }
+
+    /**
+     * @test
+     */
+    public function shouldReturn404JsonWhenNotExistAcademicOffer(): void
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/api/academicOffer/111');
+
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
     }
 }

@@ -43,8 +43,17 @@ class LeadController extends AbstractCustomController
     {
         $this->validator->validateCreateAction($request);
 
+        if (!$this->validator->isValid()) {
+
+            return $this->serializedJsonResponse(
+                $this->validator->getErrors(),
+                400
+            );
+        }
+
         $studentId = $request->get('student-id');
         $academicOfferId = $request->get('academic-offer-id');
+        $message = $request->get('message');
 
         /** @var Student|null $student */
         $student = $entityManager
@@ -72,7 +81,8 @@ class LeadController extends AbstractCustomController
             ->setSentByEmail(0)
             ->setGotFromCrm(0)
             ->setCreatedAt(new \DateTime())
-            ->setFromPortal($request->get('portal'));
+            ->setFromPortal($request->get('portal'))
+            ->setMessage($message);
 
         $entityManager->persist($lead);
         $entityManager->flush();
