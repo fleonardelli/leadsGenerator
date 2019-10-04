@@ -7,8 +7,10 @@ use App\Entity\AcademicOffer;
 use App\Entity\Lead;
 use App\Entity\Student;
 use App\Service\CustomSerializer;
+use App\Service\LeadService;
 use App\Validations\ValidatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -30,65 +32,29 @@ class LeadController extends AbstractCustomController
     }
 
     /**
-     * @Rest\Post("/lead")
+     * @Rest\Post("/lead", name="createLead")
      *
      * @param Request $request
      *
      * @return Response
      */
-    public function createLead(
-        Request $request,
-        EntityManagerInterface $entityManager
-    ): Response
+    public function createLead(Request $request, LeadService $leadService): Response
     {
-        $this->validator->validateCreateAction($request);
+        $data = json_decode($request->getContent(), true);
+
+        $this->validator->validateCreation($data);
 
         if (!$this->validator->isValid()) {
-
-            return $this->serializedJsonResponse(
-                $this->validator->getErrors(),
-                400
-            );
+            return $this->serializedJsonResponse($this->validator->getErrors(), 400);
         }
 
-        $studentId = $request->get('student-id');
-        $academicOfferId = $request->get('academic-offer-id');
-        $message = $request->get('message');
+        try {
+            $lead = $leadService->createLeadEntity($data);
+        } catch (EntityNotFoundException $e) {
 
-        /** @var Student|null $student */
-        $student = $entityManager
-            ->getRepository(Student::class)
-            ->find($studentId);
-
-        if (null === $student) {
-
-            throw $this->createNotFoundException("Student with id {$studentId} not found.");
+            return $this->serializedJsonResponse($e->getMessage(), 404);
         }
 
-        /** @var AcademicOffer|null $academicOffer */
-        $academicOffer = $entityManager
-            ->getRepository(AcademicOffer::class)
-            ->find($academicOfferId);
-
-        if (null === $academicOffer) {
-
-            throw $this->createNotFoundException("Academic offer with id {$academicOffer} not found.");
-        }
-
-        $lead = new Lead();
-        $lead->setStudent($student)
-            ->setAcademicOffer($academicOffer)
-            ->setSentByEmail(0)
-            ->setGotFromCrm(0)
-            ->setCreatedAt(new \DateTime())
-            ->setFromPortal($request->get('portal'))
-            ->setMessage($message);
-
-        $entityManager->persist($lead);
-        $entityManager->flush();
-
-        return $this->serializedJsonResponse(
-            $lead
-        );
+        return $this->serializedJsonResponse($lead);
     }
 }

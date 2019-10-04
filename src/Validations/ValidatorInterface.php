@@ -3,15 +3,14 @@
 namespace App\Validations;
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
 interface ValidatorInterface
 {
     /**
-     * @param Request $request
-     *
-     * @return array
+     * @param array $data
      */
-    public function validateCreateAction(Request $request): void;
+    public function validateCreation(array $data): void;
 
     /**
      * @return bool

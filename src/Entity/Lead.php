@@ -56,6 +56,13 @@ class Lead
      */
     private $message;
 
+    public function __construct()
+    {
+        $this->setGotFromCrm(0)
+            ->setCreatedAt(new \DateTime())
+            ->setSentByEmail(0);
+    }
+
     public function getId(): ?int
     {
         return $this->id;

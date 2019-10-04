@@ -6,6 +6,7 @@ namespace App\Validations;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 use Symfony\Component\Validator\Validation;
 
 abstract class AbstractCustomValidator implements ValidatorInterface
@@ -16,32 +17,15 @@ abstract class AbstractCustomValidator implements ValidatorInterface
     /** @var array */
     private $errors;
 
+    abstract protected function getCreationDataRules(): Assert\Collection;
+
     /**
-     * @param Request           $request
-     * @param Assert\Collection $constraint
      *
-     * @return void
      */
-    public function validate(Request $request, Assert\Collection $constraint): void
+    public function initialize(): void
     {
         $this->isValid = true;
         $this->errors = [];
-
-        $parameters = $request->query->all();
-
-        $validator = Validation::createValidator();
-
-        $violations = $validator->validate($parameters, $constraint);
-
-        if ($violations) {
-            $this->isValid = false;
-
-            foreach ($violations as $violation) {
-                /** @var ConstraintViolation $violation */
-                $field = substr($violation->getPropertyPath(), 1, -1);
-                $this->errors[$field][] = $violation->getMessage();
-            }
-        }
     }
 
     /**
@@ -58,5 +42,45 @@ abstract class AbstractCustomValidator implements ValidatorInterface
     public function getErrors(): array
     {
         return $this->errors;
+    }
+
+    /**
+     * @param array $data
+     */
+    public function validateCreation(array $data): void
+    {
+        $this->initialize();
+        $constraint = $this->getCreationDataRules();
+        $this->validateData($data, $constraint);
+    }
+
+    /**
+     * @param Request           $request
+     * @param Assert\Collection $constraint
+     *
+     * @return void
+     */
+    private function validateData(array $data, Assert\Collection $constraint): void
+    {
+        $validator = Validation::createValidator();
+        $violations = $validator->validate($data, $constraint);
+        $this->setErrors($violations);
+    }
+
+    /**
+     * @param ConstraintViolationListInterface $violations
+     */
+    private function setErrors(ConstraintViolationListInterface $violations): void
+    {
+        if ($violations->count()) {
+            $this->isValid = false;
+
+            foreach ($violations as $violation) {
+                /** @var ConstraintViolation $violation */
+                $field = substr($violation->getPropertyPath(), 1, -1);
+                $this->errors[$field][] = $violation->getMessage();
+            }
+
+        }
     }
 }
