@@ -60,8 +60,11 @@ class LeadService
         $lead = new Lead();
         $lead->setAcademicOffer($academicOffer)
             ->setStudent($student)
-            ->setMessage($data['message'])
             ->setFromPortal($data['portal']);
+
+        if (isset($data['message'])) {
+            $lead->setMessage($data['message']);
+        }
 
         $this->em->persist($lead);
         $this->em->flush();
