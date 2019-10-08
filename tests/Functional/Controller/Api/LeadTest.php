@@ -3,9 +3,8 @@
 namespace App\Tests\Functional\Controller\Api;
 
 use App\Entity\Lead;
-use Doctrine\ORM\EntityManager;
+use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityRepository;
-use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -15,33 +14,65 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 class LeadTest extends WebTestCase
 {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    private $entityManager;
+
+    /** @var EntityRepository|ObjectRepository */
+    private $repository;
+
+    /*
+     *
+     */
+    protected function setUp()
+    {
+        $kernel = self::bootKernel();
+
+        $this->entityManager = $kernel->getContainer()
+            ->get('doctrine')
+            ->getManager();
+
+        $this->repository = $this->entityManager
+            ->getRepository(Lead::class);
+    }
 
     /**
      * @test
      */
     public function shouldCreateLead(): void
     {
-        /** @var EntityRepository|MockObject $repository */
-        $repository = $this->createMock(EntityRepository::class);
-
         $client = static::createClient();
+
+        $leadsCount = count($this->repository
+            ->findAll());
 
         $parameters = [
             'student-id' => 1,
             'academic-offer-id' => 1,
-            'portal' => 'www.www.www'
+            'portal' => 'www.www.www',
+            'message' => 'pepe'
         ];
 
         $client->request(
             'POST',
-            '/api/lead?' . http_build_query($parameters)
+            '/api/lead',
+            [],
+            [],
+            [],
+            json_encode($parameters)
         );
 
-        $expectedLead = $repository->findBy([
-           'student' => 1,
-           'academicOffer' => 1
-        ]);
+        $expectedLead = $this->repository
+            ->findBy([
+                'student' => 1,
+                'academicOffer' => 1
+            ]);
 
         $this->assertNotNull($expectedLead);
+        $this->assertEquals(
+            $leadsCount + 1,
+            count($this->repository->findAll())
+        );
     }
 }

@@ -63,6 +63,9 @@ class LeadService
             ->setMessage($data['message'])
             ->setFromPortal($data['portal']);
 
+        $this->em->persist($lead);
+        $this->em->flush();
+
         return $lead;
     }
 }

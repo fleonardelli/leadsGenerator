@@ -3,13 +3,9 @@
 
 namespace App\Controller\Api;
 
-use App\Entity\AcademicOffer;
-use App\Entity\Lead;
-use App\Entity\Student;
 use App\Service\CustomSerializer;
 use App\Service\LeadService;
 use App\Validations\ValidatorInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityNotFoundException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
